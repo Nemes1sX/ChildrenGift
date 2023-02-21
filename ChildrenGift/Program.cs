@@ -1,8 +1,19 @@
+using ChildrenGift.DatContext;
+using ChildrenGift.Repositories;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddScoped<IChildrenRepository, ChildrenRepository>();
+builder.Services.AddScoped<IGiftRepository, GiftRepository>();
+builder.Services.AddDbContext<ChildGiftContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ChildGiftDatabase"));
+});
 
 var app = builder.Build();
 
