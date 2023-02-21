@@ -3,7 +3,7 @@ using ChildrenGift.DatContext;
 using ChildrenGift.Models.Dtos;
 using ChildrenGift.Models.Entities;
 using ChildrenGift.Models.FormRequest;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChildrenGift.Repositories
 {
@@ -16,6 +16,13 @@ namespace ChildrenGift.Repositories
         {
             _context = context;
             _mapper = mapper;
+        }
+
+        public async Task<List<GiftDto>> ChildGifts(int childId)
+        {
+            var childGifts = await _context.Gifts.Where(x => x.ChildId == childId).ToListAsync();
+
+            return _mapper.Map<List<GiftDto>>(childGifts);
         }
 
         public async Task<GiftDto> GetGift(int id)
@@ -71,5 +78,6 @@ namespace ChildrenGift.Repositories
 
             return id;
         }
+
     }
 }

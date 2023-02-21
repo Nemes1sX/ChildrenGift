@@ -18,6 +18,16 @@ namespace ChildrenGift.Controllers
             _giftRepository = giftRepository;
         }
 
+        // GET: api/<GiftController>/childgift?id=6
+        [Route("childgift")]
+        public async Task<ActionResult> ChildGifts(int childId)
+        {
+            var childGifts = await _giftRepository.ChildGifts(childId);
+
+            return Ok(childGifts);
+        }
+
+
         // GET: api/<GiftController>/read?id=6
         [HttpGet]
         [Route("read")]

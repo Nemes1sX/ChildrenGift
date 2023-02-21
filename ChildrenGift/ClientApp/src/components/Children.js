@@ -7,12 +7,14 @@ export class Children extends Component {
         super(props);
         this.state = {
             children: [],
-            gift: [],
+            gifts: [],
         };
     }
 
     componentDidMount() {
+        let childId = 1
         this.getChildren();
+        this.getChildrenGifts(childId);
     }
 
     getChildren() {
@@ -23,7 +25,20 @@ export class Children extends Component {
             });
     }
 
+    getChildrenGifts(id) {
+        this.setState({ gifts: [] })
+        fetch("api/gifts/childgift?childId=" + id)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ gifts: data })
+            });
+    }
+    
     deleteChild() {
+
+    }
+
+    deleteGift() {
 
     }
 
@@ -51,8 +66,8 @@ export class Children extends Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {children.map(child =>
-                                <tr key={child.id}>
+                                {children.map(child =>
+                                    <tr key={child.id} onClick={() => this.getChildrenGifts(child.id)}>
                                     <td>{child.firstName}</td>
                                     <td>{child.lastName}</td>
                                     <td>
@@ -68,7 +83,7 @@ export class Children extends Component {
                             )}
                         </tbody>
                             </table>)}
-                        {children.length == 0 && <h2> No records.</h2>}
+                        {children.length === 0 && <h2> No records.</h2>}
                     </div>
                     <div className="card-footer">
                         <p>
@@ -76,40 +91,40 @@ export class Children extends Component {
                         </p>
                     </div>
                 </div>
+
+                <br/>
                 {!gifts && <p><em>Loading...</em></p>}
                 <div className="card">
                     <div className="card-header">
-                        Children list
+                        Child gift list
                     </div>
                     <div className="card-body scrollable-table">
-                        {children.length > 0 &&
+                        {gifts.length > 0 &&
                             (<table className="table table-responsive">
                                 <thead>
                                     <tr>
-                                        <th>First Name</th>
-                                        <th>Last Name</th>
+                                        <th>Name</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {children.map(child =>
-                                        <tr key={child.id}>
-                                            <td>{child.firstName}</td>
-                                            <td>{child.lastName}</td>
+                            <tbody>
+                                {gifts.map(gift =>
+                                    <tr key={gift.id}>
+                                        <td>{gift.name}</td>
                                             <td>
                                                 <div className="btn-group" role="group">
                                                     <Link className="btn btn-secondary" to={{
-                                                        pathname: '/edit',
-                                                        search: 'id?=' + child.id
-                                                    }} >Edit</Link>
-                                                    <a className="btn btn-danger" onClick={() => this.deleteChild(child.id)}>Delete</a>
+                                                    pathname: '/gift/edit',
+                                                    search: 'id?=' + gift.id
+                                                }} >Edit</Link>
+                                                <a className="btn btn-danger" onClick={() => this.deleteGift(gift.id)}>Delete</a>
                                                 </div>
                                             </td>
                                         </tr>
                                     )}
                                 </tbody>
                             </table>)}
-                        {children.length == 0 && <h2> No records.</h2>}
+                        {gifts.length === 0 && <h2> No records.</h2>}
                     </div>
                     <div className="card-footer">
                         <p>
