@@ -1,5 +1,9 @@
 ﻿.scrollable-table {
     overflow: auto;
-    height: 350px;
+    height: 320px;
+}
+
+a.btn-gap {
+    margin-left: 5px;
 }
 

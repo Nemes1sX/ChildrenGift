@@ -12,9 +12,7 @@ export class Children extends Component {
     }
 
     componentDidMount() {
-        let childId = 1
-        this.getChildren();
-        this.getChildrenGifts(childId);
+        this.refreshFullList();
     }
 
     getChildren() {
@@ -33,17 +31,48 @@ export class Children extends Component {
                 this.setState({ gifts: data })
             });
     }
-    
-    deleteChild() {
 
+    refreshFullList() {
+        let childId = 1
+        this.getChildren();
+        this.getChildrenGifts(childId);
     }
 
-    deleteGift() {
+    deleteChild(id) {
+        if (!confirm("Do you want to delete child with Id: " + id)) {
+            return;
+        }
+        fetch("api/children/delete?id=" + id, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(response => {
+                alert(response);
+                this.refreshFullList();
+            })
+            .catch(error => {
+                alert(error);
+            });
+    }
 
+    deleteGift(id) {
+        if (!confirm("Do you want to delete gift with Id: " + id)) {
+            return;
+        }
+        fetch("api/gift/delete?id=" + id, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(response => {
+                alert(response);
+                this.refreshFullList();
+            })
+            .catch(error => {
+                alert(error);
+            });
     }
 
     render() {
-
         const {
             children,
             gifts
@@ -53,85 +82,81 @@ export class Children extends Component {
                 {!children && <p><em>Loading...</em></p>}
                 <div className="card">
                     <div className="card-header">
-                        Children list
+                        X-mas gift for children
                     </div>
-                    <div className="card-body scrollable-table">
-                {children.length > 0 &&
-                    (<table className="table table-responsive">
-                        <thead>
-                            <tr>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                {children.map(child =>
-                                    <tr key={child.id} onClick={() => this.getChildrenGifts(child.id)}>
-                                    <td>{child.firstName}</td>
-                                    <td>{child.lastName}</td>
-                                    <td>
-                                        <div className="btn-group" role="group">
-                                            <Link className="btn btn-secondary" to={{
-                                                pathname: '/edit',
-                                                search: 'id?=' + child.id
-                                            }} >Edit</Link>
-                                            <a className="btn btn-danger" onClick={() => this.deleteChild(child.id)}>Delete</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                            </table>)}
-                        {children.length === 0 && <h2> No records.</h2>}
-                    </div>
-                    <div className="card-footer">
+                    <div className="card-body">
+                        <div className="children-list scrollable-table">
+                            {children.length > 0 &&
+                                (<table className="table table-responsive table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {children.map(child =>
+                                            <tr key={child.id} onClick={() => this.getChildrenGifts(child.id)}>
+                                                <td>{child.firstName}</td>
+                                                <td>{child.lastName}</td>
+                                                <td>
+                                                    <div className="btn-group" role="group">
+                                                        <Link className="btn btn-secondary" to={{
+                                                            pathname: '/edit',
+                                                            search: 'id=' + child.id
+                                                        }} >Edit</Link>
+                                                        <a className="btn btn-danger btn-gap" onClick={() => this.deleteChild(child.id)}>Delete</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>)}
+                            {children.length === 0 && <h2> No records.</h2>}
+                        </div>
+                        <br />
                         <p>
-                            <a className="btn btn-success" href="#">Create New</a>
+                            <Link className="btn btn-success" to="add">Add new child</Link>
+                        </p>
+
+
+                        <br />
+                        {!gifts && <p><em>Loading...</em></p>}
+                        <div className="gift-list scrollable-table">
+                            {gifts.length > 0 &&
+                                (<table className="table table-responsive table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {gifts.map(gift =>
+                                            <tr key={gift.id}>
+                                                <td>{gift.name}</td>
+                                                <td>
+                                                    <div className="btn-group" role="group">
+                                                        <Link className="btn btn-secondary" to={{
+                                                            pathname: '/gift/edit',
+                                                            search:  'id' + gift.id
+                                                        }}>Edit</Link>
+                                                        <a className="btn btn-danger btn-gap" onClick={() => this.deleteGift(gift.id)}>Delete</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>)}
+                            {gifts.length === 0 && <h2> No records.</h2>}
+                        </div>
+                        <br />
+                        <p>
+                            <a className="btn btn-success" href="#">Add child's gift</a>
                         </p>
                     </div>
                 </div>
-
-                <br/>
-                {!gifts && <p><em>Loading...</em></p>}
-                <div className="card">
-                    <div className="card-header">
-                        Child gift list
-                    </div>
-                    <div className="card-body scrollable-table">
-                        {gifts.length > 0 &&
-                            (<table className="table table-responsive">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                            <tbody>
-                                {gifts.map(gift =>
-                                    <tr key={gift.id}>
-                                        <td>{gift.name}</td>
-                                            <td>
-                                                <div className="btn-group" role="group">
-                                                    <Link className="btn btn-secondary" to={{
-                                                    pathname: '/gift/edit',
-                                                    search: 'id?=' + gift.id
-                                                }} >Edit</Link>
-                                                <a className="btn btn-danger" onClick={() => this.deleteGift(gift.id)}>Delete</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )}
-                                </tbody>
-                            </table>)}
-                        {gifts.length === 0 && <h2> No records.</h2>}
-                    </div>
-                    <div className="card-footer">
-                        <p>
-                            <a className="btn btn-success" href="#">Create New</a>
-                        </p>
-                    </div>
-                </div>     
             </>
         );
 
