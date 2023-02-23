@@ -67,7 +67,7 @@ class AddEditChild extends Component {
                 headers: headers               
             }).then(response => response.json())
                 .then(() => {
-                    this.props.history.push("children");
+                    history.push("children");
                     //this.context.router.push("children");
                     //BrowserRouter.push("children");
                     //redirect("/children");
