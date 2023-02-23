@@ -103,11 +103,11 @@ export class Children extends Component {
                                                 <td>{child.lastName}</td>
                                                 <td>
                                                     <div className="btn-group" role="group">
-                                                        <Link className="btn btn-secondary" to={{
+                                                        <Link className="btn btn-secondary btn-gap" to={{
                                                             pathname: 'edit',
                                                             search: 'id=' + child.id
                                                         }}>Edit</Link>
-                                                        <a className="btn btn-danger btn-gap" onClick={(id) => this.deleteChild(child.id)}>Delete</a>
+                                                        <a className="btn btn-danger" onClick={(id) => this.deleteChild(child.id)}>Delete</a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -134,14 +134,14 @@ export class Children extends Component {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {gifts.map(gift =>
-                                            <tr key={gift.id}>
+                                    {gifts.map(gift =>
+                                        <tr key={gift.id}>
                                                 <td>{gift.name}</td>
                                                 <td>
                                                     <div className="btn-group" role="group">
-                                                        <Link className="btn btn-secondary" to={{
+                                                        <Link className="btn btn-secondary btn-gap" to={{
                                                             pathname: '/gift/edit',
-                                                            search:  'id' + gift.id
+                                                            search:  'id=' + gift.id
                                                         }}>Edit</Link>
                                                         <a className="btn btn-danger btn-gap" onClick={() => this.deleteGift(gift.id)}>Delete</a>
                                                     </div>
@@ -154,7 +154,7 @@ export class Children extends Component {
                         </div>
                         <br />
                         <p>
-                            <a className="btn btn-success" href="#">Add child's gift</a>
+                            <Link className="btn btn-success" to="/gift/add">Add child's gift</Link>
                         </p>
                     </div>
                 </div>

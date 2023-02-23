@@ -1,13 +1,14 @@
 ﻿import { Component } from "react";
-import { Link, withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { withRouter } from "../withRouter";
 import './Children.css';
 
-export class AddEditChild extends Component {
+class AddEditChild extends Component {
     constructor(props) {
         super(props);
         this.state = {
             title: "",
-            childId: 0,
+            //childId: 0,
             child: {},
             errors: {}
         }
@@ -16,19 +17,19 @@ export class AddEditChild extends Component {
     }
 
     componentDidMount() {
-        this.getQueryString();
+        //this.getQueryString();
+        setTimeout(1000);
         let childId = this.state.childId;
-        console.log(childId);
-        if (childId && childId > 0) {
-            this.getChild(childId);
-        }
+        console.log(this.state);
+        //if (childId && childId > 0) {
+        this.getChild();
+        //}
     }
 
-    getQueryString() {
-        const params = new URLSearchParams(window.location.search);
-        const childId = params.get('id');
-        this.setState({ childId: childId })
-    }
+   /* getQueryString() {
+ 
+        this.setState({ childId: childIdParam })
+    }*/
 
     saveChild(event) {
         event.preventDefault();
@@ -45,7 +46,9 @@ export class AddEditChild extends Component {
         }
     }
 
-    getChild(childId) {
+    getChild() {
+        const params = new URLSearchParams(window.location.search);
+        let childId = params.get('id');
         if (childId === 0 && childId) {
             this.setState({ title: "Create child" });
         } else {
@@ -65,8 +68,12 @@ export class AddEditChild extends Component {
             }).then(response => response.json())
                 .then(() => {
                     this.props.history.push("children");
+                    //this.context.router.push("children");
+                    //BrowserRouter.push("children");
+                    //redirect("/children");
                 })
                 .catch(error => {
+                    console.log(error);
                     this.setState({ errors: error.errors });
                 });
      }
@@ -80,7 +87,8 @@ export class AddEditChild extends Component {
                 .then(() => {
                     this.props.history.push("children");
                 })
-                .catch(error => {
+                .catch((error) => {
+                    console.error(error);
                     this.setState({ errors: error.errors });
                 })
         }
@@ -107,13 +115,13 @@ export class AddEditChild extends Component {
                         <div className="col-md-6">
                                 <input className="form-control" type="text" name="firstName" defaultValue={child ? child.firstName : ""} required />
                                 {/* <input className="form-control" type="text" name="FirstName" defaultValue="" required />*/}
-                                {errors.FirstName && <span className="text-danger">{errors.FirstName}</span>}
+                                {errors > 0 && <span className="text-danger">{errors.FirstName[0]}</span>}
                         </div>
                         <label className="control-label col-md-12 center-form" htmlFor="LastName">Last Name</label>
                             <div className="col-md-6">
                                <input className="form-control" type="text" name="lastName" defaultValue={child ? child.lastName : ""} required />
                                 {/*<input className="form-control" type="text" name="LastName" defaultValue="" required />*/}
-                                {errors.LastName && <span className="text-danger">{errors.LastName}</span>}
+                                {errors  > 0 && <span className="text-danger">{errors.LastName[0]}</span>}
                         </div>
                     </div>
                     <br />
@@ -128,3 +136,5 @@ export class AddEditChild extends Component {
         
     }
 }
+
+export default withRouter(AddEditChild);

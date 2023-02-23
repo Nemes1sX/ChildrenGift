@@ -1,4 +1,5 @@
-import { AddEditChild } from "./components/AddEditChild";
+import AddEditChild  from "./components/AddEditChild";
+import { AddEditGift } from "./components/AddEditGift";
 import { Children } from "./components/Children";
 import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
@@ -28,6 +29,14 @@ const AppRoutes = [
     {
         path: '/children/edit',
         element: <AddEditChild />
+    },
+    {
+        path: '/gift/add',
+        element: <AddEditGift/>
+    },
+    {
+        path: '/gift/edit',
+        element: <AddEditGift/>
     }
 ];
 
