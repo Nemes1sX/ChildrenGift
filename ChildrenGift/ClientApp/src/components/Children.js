@@ -1,4 +1,4 @@
-﻿import React, { Component } from 'react';
+﻿import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Children.css';
 
@@ -39,7 +39,7 @@ export class Children extends Component {
     }
 
     deleteChild(id) {
-        if (!confirm("Do you want to delete child with Id: " + id)) {
+        if (!window.confirm("Do you want to delete child with Id: " + id)) {
             return;
         }
         fetch("api/children/delete?id=" + id, {
@@ -56,7 +56,7 @@ export class Children extends Component {
     }
 
     deleteGift(id) {
-        if (!confirm("Do you want to delete gift with Id: " + id)) {
+        if (!window.confirm("Do you want to delete gift with Id: " + id)) {
             return;
         }
         fetch("api/gift/delete?id=" + id, {
@@ -71,6 +71,7 @@ export class Children extends Component {
                 alert(error);
             });
     }
+
 
     render() {
         const {
@@ -103,10 +104,10 @@ export class Children extends Component {
                                                 <td>
                                                     <div className="btn-group" role="group">
                                                         <Link className="btn btn-secondary" to={{
-                                                            pathname: '/edit',
+                                                            pathname: 'edit',
                                                             search: 'id=' + child.id
-                                                        }} >Edit</Link>
-                                                        <a className="btn btn-danger btn-gap" onClick={() => this.deleteChild(child.id)}>Delete</a>
+                                                        }}>Edit</Link>
+                                                        <a className="btn btn-danger btn-gap" onClick={(id) => this.deleteChild(child.id)}>Delete</a>
                                                     </div>
                                                 </td>
                                             </tr>

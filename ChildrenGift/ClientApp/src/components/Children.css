@@ -1,9 +1,13 @@
-﻿.scrollable-table {
+﻿.center-form {
+    margin: 0 auto;
+    float: none;
+}
+.scrollable-table {
     overflow: auto;
     height: 320px;
 }
 
-a.btn-gap {
-    margin-left: 5px;
+.btn-gap {
+    margin-right: 5px;
 }
 
