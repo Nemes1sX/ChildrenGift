@@ -1,13 +1,14 @@
 ﻿import { Component } from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "../withRouter";
+import axios from 'axios';
 import './Children.css';
 
 class AddEditChild extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: "",
+            title: "Create child",
             //childId: 0,
             child: {},
             errors: {}
@@ -17,23 +18,17 @@ class AddEditChild extends Component {
     }
 
     componentDidMount() {
-        //this.getQueryString();
-        setTimeout(1000);
-        let childId = this.state.childId;
-        console.log(this.state);
-        //if (childId && childId > 0) {
+        const params = new URLSearchParams(window.location.search);
+        let childId = params.get('id');
+        if (childId && childId > 0) {
         this.getChild();
-        //}
+        }
     }
-
-   /* getQueryString() {
- 
-        this.setState({ childId: childIdParam })
-    }*/
 
     saveChild(event) {
         event.preventDefault();
-        const data = new FormData(event.target);
+        let data = new FormData(event.target);
+        data = JSON.stringify(Object.fromEntries(data));
         const headersJson = {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json;charset=UTF-8'
@@ -50,9 +45,9 @@ class AddEditChild extends Component {
         const params = new URLSearchParams(window.location.search);
         let childId = params.get('id');
         if (childId === 0 && childId) {
-            this.setState({ title: "Create child" });
+            return;
         } else {
-            fetch('api/children/read?id=' + childId)
+            axios.get('api/children/read?id=' + childId)
                 .then(response => response.json())
                 .then(data => {
                     this.setState({ title: "Edit child", child: data });
@@ -61,35 +56,26 @@ class AddEditChild extends Component {
     }
 
     addChild(data, headers) {
-            fetch('api/children/post', {
-                method: "POST",
-                body: JSON.stringify(Object.fromEntries(data)),
-                headers: headers               
-            }).then(response => response.json())
+        axios.post('api/children/post', data, {
+            headers: headers
+        }).then(response => response.data)
                 .then(() => {
-                    history.push("children");
-                    //this.context.router.push("children");
-                    //BrowserRouter.push("children");
-                    //redirect("/children");
+                    this.props.router.navigate("/children");                    
                 })
-                .catch(error => {
-                    console.log(error);
-                    this.setState({ errors: error.errors });
+            .catch((error) => {
+                this.setState({ errors: error.response.data.errors });
                 });
      }
     
     updateChild(data, childId, headers) {
-            fetch('api/children/update?id=' + childId, {
-                method: "PUT",
+        axios.put('api/children/update?id=' + childId, data, {
                 headers: headers,
-                body: data
             }).then(response => response.json())
-                .then(() => {
-                    this.props.history.push("children");
+            .then(() => {
+                this.props.router.navigate("children");
                 })
                 .catch((error) => {
-                    console.error(error);
-                    this.setState({ errors: error.errors });
+                    this.setState({ errors: error.response.data.errors });
                 })
         }
 
@@ -111,23 +97,21 @@ class AddEditChild extends Component {
                             {childId && <input type="hidden" name="childId" value={childId} />}
                     </div>
                     <div className="form-group row center-form">
-                        <label className="control-label col-md-12" htmlFor="FirstName">First Name</label>
+                        <label className="control-label col-md-12 center-form" htmlFor="FirstName">First Name</label>
                         <div className="col-md-6">
                                 <input className="form-control" type="text" name="firstName" defaultValue={child ? child.firstName : ""} required />
-                                {/* <input className="form-control" type="text" name="FirstName" defaultValue="" required />*/}
-                                {errors > 0 && <span className="text-danger">{errors.FirstName[0]}</span>}
+                                {errors.FirstName && errors.FirstName.map(errorFirstName => <span className="text-danger">{errorFirstName}</span>)}
                         </div>
                         <label className="control-label col-md-12 center-form" htmlFor="LastName">Last Name</label>
                             <div className="col-md-6">
-                               <input className="form-control" type="text" name="lastName" defaultValue={child ? child.lastName : ""} required />
-                                {/*<input className="form-control" type="text" name="LastName" defaultValue="" required />*/}
-                                {errors  > 0 && <span className="text-danger">{errors.LastName[0]}</span>}
+                                <input className="form-control" type="text" name="lastName" defaultValue={child ? child.lastName : ""} required />
+                                {errors.LastName && errors.LastName.map(errorLastName => <span className="text-danger">{errorLastName}</span>)}
                         </div>
                     </div>
                     <br />
-                    <div className="btn-group center-form" role="group">
-                        <button type="submit" className="btn btn-success float-start btn-gap text-center">Save</button>
-                        <Link className="btn btn-danger text-center" to="/children">Back</Link>
+                        <div className="btn-group center-form" role="group">
+                        <button type="submit" className="btn btn-success btn-gap">Save</button>
+                        <Link className="btn btn-danger" to="/children">Back</Link>
                     </div>
                     </form>
                 </div>

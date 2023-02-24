@@ -1,6 +1,7 @@
 ﻿.center-form {
-    margin: 0 auto;
-    float: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .scrollable-table {
     overflow: auto;

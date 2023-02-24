@@ -1,5 +1,6 @@
 ﻿import { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import './Children.css';
 
 export class Children extends Component {
@@ -42,9 +43,7 @@ export class Children extends Component {
         if (!window.confirm("Do you want to delete child with Id: " + id)) {
             return;
         }
-        fetch("api/children/delete?id=" + id, {
-            method: 'DELETE'
-        })
+        axios.delete("api/children/delete?id=" + id)
             .then(response => response.json())
             .then(response => {
                 alert(response);
@@ -59,10 +58,8 @@ export class Children extends Component {
         if (!window.confirm("Do you want to delete gift with Id: " + id)) {
             return;
         }
-        fetch("api/gift/delete?id=" + id, {
-            method: 'DELETE'
-        })
-            .then(response => response.json())
+        axios.delete("api/gift/delete?id=" + id)
+            .then(response => response.data)
             .then(response => {
                 alert(response);
                 this.refreshFullList();

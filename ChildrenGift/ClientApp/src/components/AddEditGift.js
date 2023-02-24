@@ -1,47 +1,40 @@
 ﻿import { Component } from "react";
 import { Link } from "react-router-dom";
+import { withRouter } from "../withRouter"
+import  axios  from "axios"
 
-export class AddEditGift extends Component {
+class AddEditGift extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            title: "",
+            title: "Create gift for child",
             gift: {},
-            giftId: 0,
-            children: []
+            children: [],
+            errors: []
           }
     }
 
     componentDidMount() {
-        this.getQueryString();
-        let giftId = this.state.giftId;
-        /*if (giftId > 0) {
-            console.log('Hello');
+        const params = new URLSearchParams(window.location.search);
+        const giftId = params.get('id');
+        if (giftId > 0) {
             this.getGift(giftId);
-        }*/
-        this.getGift();
+        }
         this.getChildren();
     }
 
-    getQueryString() {
-        const params = new URLSearchParams(window.location.search);
-        const giftId = params.get('id');
-        this.setState({ giftId: giftId })
-        console.log(this.state.giftId);
-
-    }
-
     getChildren() {
-        fetch("api/children/index")
-            .then(response => response.json())
+        axios.get("api/children/index")
+            .then(response => response.data)
             .then(data => {
                 this.setState({ children: data })
             });
     }
 
-    saveCGift(event) {
+    saveGift(event) {
         event.preventDefault();
-        const data = new FormData(event.target);
+        let data = new FormData(event.target);
+        data = JSON.stringify(Object.fromEntries(data));
         const headersJson = {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json;charset=UTF-8'
@@ -54,49 +47,45 @@ export class AddEditGift extends Component {
         }
     }
 
-    getGift() {
-        const params = new URLSearchParams(window.location.search);
-        let giftId = params.get('id');
-        if (giftId === 0 && giftId) {
-            this.setState({ title: "Create gift for child" });
+    getGift(giftId) {
+        if (giftId === 0) {
+            return;
         } else {
-            fetch('api/gifts/read?id=' + giftId)
-                .then(response => response.json())
+            axios.get('api/gifts/read?id=' + giftId)
+                .then(response => response.data)
                 .then(data => {
                     this.setState({ title: "Edit gift for child", gift: data });
+                })
+                .catch(error => {
+                    let response = error.response;
+                    if (response.status === 404) {
+                        this.props.router.navigate("/404");
+                    }
                 });
         }
     }
 
     addGift(data, headers) {
-        fetch('api/children/gift', {
-            method: "POST",
-            body: JSON.stringify(Object.fromEntries(data)),
+        axios.post('api/children/gift', data, {
             headers: headers
-        }).then(response => response.json())
+        }).then(response => response.data)
             .then(() => {
-                this.props.history.push("children");
-                //this.context.router.push("children");
-                //BrowserRouter.push("children");
+                this.props.router.navigate("/children");
             })
             .catch(error => {
-                console.log(error);
-                this.setState({ errors: error.errors });
+                this.setState({ errors: error.response.data.errors });
             });
     }
 
     updateGift(data, giftId, headers) {
-        fetch('api/children/update?id=' + giftId, {
-            method: "PUT",
+        axios.put('api/children/update?id=' + giftId, data, {
             headers: headers,
-            body: data
-        }).then(response => response.json())
+        }).then(response => response.data)
             .then(() => {
-                this.props.history.push("children");
+                this.props.router.navigate("/children");
             })
-            .catch((error) => {
-                console.error(error);
-                this.setState({ errors: error.errors });
+            .catch(error => {
+                this.setState({ errors: error.response.data.errors });
             })
     }
 
@@ -105,7 +94,6 @@ export class AddEditGift extends Component {
         const {
             title,
             gift,
-            giftId,
             children,
             errors
         } = this.state
@@ -116,24 +104,24 @@ export class AddEditGift extends Component {
                 <div className="center-form">
                     <form onSubmit={this.saveChild}>
                         <div className="form-group row">
-                            {giftId && <input type="hidden" name="childId" value={giftId} />}
+                            {gift && <input type="hidden" name="giftId" value={gift.giftId} />}
                         </div>
                         <div className="form-group row center-form">
                             <label className="control-label col-md-12" htmlFor="Name">Name</label>
                             <div className="col-md-6">
                                 <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ""} required />
-                                {/* <input className="form-control" type="text" name="FirstName" defaultValue="" required />*/}
-                                {errors > 0 && <span className="text-danger">{errors.FirstName[0]}</span>}
+                                {errors.Name && errors.Name.map( errorName => <span className="text-danger">{errorName}</span>)}
                             </div>
                             <div className="form-group row">
                                 <label className="control-label col-md-12" htmlFor="City">City</label>
                                 <div className="col-md-4">
-                                    <select className="form-control" data-val="true" name="ChildId" defaultValue={gift.childId} required>
+                                    <select className="form-control" data-val="true" name="ChildId" defaultValue={gift && gift.childId} required>
                                         <option value="">-- Select Child --</option>
                                         {children.map(child =>
-                                            <option key={child.id} defaultValue="{child.id}" selected="{child.id == gift.childId}">{child.firstName + " " + child.lastName}</option>                                     
+                                            <option key={child.id} defaultValue="{child.id}">{child.firstName + " " + child.lastName}</option>                                     
                                         )}
                                     </select>
+                                    {errors.ChildId && errors.ChildId.map(errorChildId => <span className="text-danger">{errorChildId}</span>)}
                                 </div>
                             </div >  
                         </div>
@@ -149,3 +137,5 @@ export class AddEditGift extends Component {
 
     }
 }
+
+export default withRouter(AddEditGift)
