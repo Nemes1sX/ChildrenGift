@@ -11,7 +11,9 @@ class AddEditGift extends Component {
             gift: {},
             children: [],
             errors: []
-          }
+        }
+
+        this.saveGift = this.saveGift.bind(this);
     }
 
     componentDidMount() {
@@ -35,12 +37,13 @@ class AddEditGift extends Component {
         event.preventDefault();
         let data = new FormData(event.target);
         data = JSON.stringify(Object.fromEntries(data));
+        console.log(this.state.gift);
+        let gift = this.state.gift;
         const headersJson = {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json;charset=UTF-8'
         };
-        if (this.state.gift.id) {
-            let gift = this.state.gift;
+        if (gift.id) {
             this.updateGift(data, gift.id, headersJson);
         } else {
             this.addGift(data, headersJson);
@@ -66,7 +69,7 @@ class AddEditGift extends Component {
     }
 
     addGift(data, headers) {
-        axios.post('api/children/gift', data, {
+        axios.post('api/gifts/post', data, {
             headers: headers
         }).then(response => response.data)
             .then(() => {
@@ -78,7 +81,7 @@ class AddEditGift extends Component {
     }
 
     updateGift(data, giftId, headers) {
-        axios.put('api/children/update?id=' + giftId, data, {
+        axios.put('api/gifts/update?id=' + giftId, data, {
             headers: headers,
         }).then(response => response.data)
             .then(() => {
@@ -86,6 +89,10 @@ class AddEditGift extends Component {
             })
             .catch(error => {
                 this.setState({ errors: error.response.data.errors });
+                let response = error.response;
+                if (response.status === 404) {
+                    this.props.router.navigate("/404");
+                }
             })
     }
 
@@ -102,10 +109,10 @@ class AddEditGift extends Component {
             <>
                 <h1 className="text-center">{title}</h1>
                 <div className="center-form">
-                    <form onSubmit={this.saveChild}>
-                        <div className="form-group row">
-                            {gift && <input type="hidden" name="giftId" value={gift.giftId} />}
-                        </div>
+                    <form onSubmit={this.saveGift}>
+                        {gift.id && <div className="form-group row">
+                            <input type="hidden" name="giftId" value={gift.giftId} />
+                        </div>}
                         <div className="form-group row center-form">
                             <label className="control-label col-md-12" htmlFor="Name">Name</label>
                             <div className="col-md-6">
@@ -116,9 +123,9 @@ class AddEditGift extends Component {
                                 <label className="control-label col-md-12" htmlFor="City">City</label>
                                 <div className="col-md-4">
                                     <select className="form-control" data-val="true" name="ChildId" defaultValue={gift && gift.childId} required>
-                                        <option value="">-- Select Child --</option>
+                                        <option value="0">-- Select Child --</option>
                                         {children.map(child =>
-                                            <option key={child.id} defaultValue="{child.id}">{child.firstName + " " + child.lastName}</option>                                     
+                                            <option key={child.id} value={child.id} {...child.id === gift.id ? 'selected' : ''}>{child.firstName + " " + child.lastName}</option>                                     
                                         )}
                                     </select>
                                     {errors.ChildId && errors.ChildId.map(errorChildId => <span className="text-danger">{errorChildId}</span>)}

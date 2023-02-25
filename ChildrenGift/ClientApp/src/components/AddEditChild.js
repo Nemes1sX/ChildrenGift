@@ -70,12 +70,16 @@ class AddEditChild extends Component {
     updateChild(data, childId, headers) {
         axios.put('api/children/update?id=' + childId, data, {
                 headers: headers,
-            }).then(response => response.json())
+            }).then(response => response.data)
             .then(() => {
                 this.props.router.navigate("children");
                 })
                 .catch((error) => {
                     this.setState({ errors: error.response.data.errors });
+                    let response = error.response
+                    if (response.status === 404) {
+                        this.props.router.navigate("/404");
+                    }
                 })
         }
 
