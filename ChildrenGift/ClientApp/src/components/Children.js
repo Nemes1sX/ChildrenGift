@@ -50,7 +50,7 @@ export class Children extends Component {
                 this.refreshFullList();
             })
             .catch(error => {
-                alert(error);
+                alert(error.message);
             });
     }
 
@@ -65,8 +65,7 @@ export class Children extends Component {
                 this.refreshFullList();
             })
             .catch(error => {
-                alert(error);
-                this.props.router.navigate("/children");
+                alert(error.message);
             });
     }
 
@@ -141,7 +140,7 @@ export class Children extends Component {
                                                             pathname: '/gift/edit',
                                                             search:  'id=' + gift.id
                                                     }}>Edit</Link>
-                                                    <button type="button" className="btn btn-danger btn-gap" onClick={() => this.deleteGift(gift.id)}>Delete</button>
+                                                    <a className="btn btn-danger btn-gap" onClick={() => this.deleteGift(gift.id)}>Delete</a>
                                                     </div>
                                                 </td>
                                             </tr>

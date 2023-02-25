@@ -37,7 +37,6 @@ class AddEditGift extends Component {
         event.preventDefault();
         let data = new FormData(event.target);
         data = JSON.stringify(Object.fromEntries(data));
-        console.log(this.state.gift);
         let gift = this.state.gift;
         const headersJson = {
             'Accept': 'application/json, text/plain',
