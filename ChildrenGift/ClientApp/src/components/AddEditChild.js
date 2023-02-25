@@ -65,7 +65,7 @@ class AddEditChild extends Component {
             headers: headers
         }).then(response => response.data)
             .then(() => {
-                this.props.router.navigate("/children");
+                this.props.router.navigate("/");
             })
             .catch((error) => {
                 this.setState({ errors: error.response.data.errors });
@@ -77,7 +77,7 @@ class AddEditChild extends Component {
             headers: headers,
         }).then(response => response.data)
             .then(() => {
-                this.props.router.navigate("/children");
+                this.props.router.navigate("/");
             })
             .catch((error) => {
                 this.setState({ errors: error.response.data.errors });
@@ -121,7 +121,7 @@ class AddEditChild extends Component {
                         <div className="col-md-12 text-center">
                             <div className="btn-group" role="group">
                                 <button type="submit" className="btn btn-success btn-gap">Save</button>
-                                <Link className="btn btn-danger" to="/children">Back</Link>
+                                <Link className="btn btn-danger" to="/">Back</Link>
                             </div>
                         </div>
                     </div>

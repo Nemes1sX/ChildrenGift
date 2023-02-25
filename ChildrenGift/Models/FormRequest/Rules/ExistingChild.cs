@@ -10,7 +10,7 @@ namespace ChildrenGift.Models.FormRequest.Rules
             var giftFormRequest = (GiftFormRequest)validationContext.ObjectInstance;
             var _db = (ChildGiftContext)validationContext.GetService(typeof(ChildGiftContext));
 
-            if (giftFormRequest.ChildId == null || giftFormRequest.ChildId == 0)
+            if (giftFormRequest.ChildId == 0)
             {
                 return new ValidationResult("Value non existing");
             }

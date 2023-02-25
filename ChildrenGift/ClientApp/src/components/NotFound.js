@@ -12,7 +12,7 @@ export class NotFound extends Component {
                 <h2 className="text-center">Record not found</h2>
                 <br />
                 <div className="center-form">
-                    <Link className="btn btn-danger" to="/children">Back to list</Link>
+                    <Link className="btn btn-danger" to="/">Back to list</Link>
                 </div>
             </>
         )

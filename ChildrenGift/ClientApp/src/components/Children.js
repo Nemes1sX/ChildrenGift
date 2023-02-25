@@ -102,7 +102,7 @@ export class Children extends Component {
                                                 <td>
                                                     <div className="btn-group" role="group">
                                                         <Link className="btn btn-secondary btn-gap" to={{
-                                                            pathname: 'edit',
+                                                            pathname: '/children/edit',
                                                             search: 'id=' + child.id
                                                         }}>Edit</Link>
                                                         <button type="button" className="btn btn-danger" onClick={(id) => this.deleteChild(child.id)}>Delete</button>
@@ -116,7 +116,7 @@ export class Children extends Component {
                         </div>
                         <br />
                         <p>
-                            <Link className="btn btn-success" to="add">Add new child</Link>
+                            <Link className="btn btn-success" to="/children/add">Add new child</Link>
                         </p>
 
 

@@ -73,7 +73,7 @@ class AddEditGift extends Component {
             headers: headers
         }).then(response => response.data)
             .then(() => {
-                this.props.router.navigate("/children");
+                this.props.router.navigate("/");
             })
             .catch(error => {
                 this.setState({ errors: error.response.data.errors });
@@ -85,7 +85,7 @@ class AddEditGift extends Component {
             headers: headers,
         }).then(response => response.data)
             .then(() => {
-                this.props.router.navigate("/children");
+                this.props.router.navigate("/");
             })
             .catch(error => {
                 this.setState({ errors: error.response.data.errors });
@@ -137,7 +137,7 @@ class AddEditGift extends Component {
                         <div className="col-md-12 text-center">
                             <div className="btn-group" role="group">
                                 <button type="submit" className="btn btn-success float-start btn-gap text-center">Save</button>
-                                <Link className="btn btn-danger text-center" to="/children">Back</Link>
+                                <Link className="btn btn-danger text-center" to="/">Back</Link>
                             </div>
                         </div>
                     </div>
