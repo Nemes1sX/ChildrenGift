@@ -1,5 +1,6 @@
 # ChildrenGift
 .NET 6 API + React full-stack app to manage childern and their gifts.
+## Prerequisties
 Things you need to install.
 * [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 * [Node.js LTS Version: 18.14.2](https://nodejs.org/en/download/)
