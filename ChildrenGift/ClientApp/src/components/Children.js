@@ -104,7 +104,7 @@ export class Children extends Component {
                                                             pathname: '/children/edit',
                                                             search: 'id=' + child.id
                                                         }}>Edit</Link>
-                                                        <button type="button" className="btn btn-danger" onClick={(id) => this.deleteChild(child.id)}>Delete</button>
+                                                        <button type="button" className="btn btn-danger" onClick={() => this.deleteChild(child.id)}>Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -140,7 +140,7 @@ export class Children extends Component {
                                                             pathname: '/gift/edit',
                                                             search:  'id=' + gift.id
                                                     }}>Edit</Link>
-                                                    <a className="btn btn-danger btn-gap" onClick={() => this.deleteGift(gift.id)}>Delete</a>
+                                                    <button className="btn btn-danger btn-gap" onClick={() => this.deleteGift(gift.id)}>Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
