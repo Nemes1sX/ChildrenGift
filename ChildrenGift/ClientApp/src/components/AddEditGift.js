@@ -1,7 +1,7 @@
 ﻿import { Component } from "react";
 import { Link } from "react-router-dom";
 import { withRouter } from "../withRouter"
-import  axios  from "axios"
+import axios from "axios"
 
 class AddEditGift extends Component {
     constructor(props) {
@@ -108,37 +108,39 @@ class AddEditGift extends Component {
         return (
             <>
                 <h1 className="text-center">{title}</h1>
-                <div className="center-form">
-                    <form onSubmit={this.saveGift}>
-                        {gift.id && <div className="form-group row">
-                            <input type="hidden" name="giftId" value={gift.giftId} />
-                        </div>}
-                        <div className="form-group row center-form">
-                            <label className="control-label col-md-12" htmlFor="Name">Name</label>
-                            <div className="col-md-6">
-                                <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ""} required />
-                                {errors.Name && errors.Name.map(errorName => <span key="{index}" className="text-danger">{errorName}</span>)}
+                <form onSubmit={this.saveGift}>
+                    {gift.id && <div className="form-group row">
+                        <input type="hidden" name="giftId" value={gift.giftId} />
+                    </div>}
+                    <div className="form-group row">
+                        <label className="form-label col-md-12" htmlFor="Name">Name</label>
+                        <div className="col-md-10">
+                            <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ""} required />
+                            {errors.Name && errors.Name.map(errorName => <span key="{index}" className="text-danger">{errorName}</span>)}
+                        </div>
+                        <div className="form-group row">
+                            <label className="form-label col-md-12" htmlFor="City">City</label>
+                            <div className="col-md-10">
+                                <select className="form-control" data-val="true" name="ChildId" defaultValue={gift && gift.childId} required>
+                                    <option value="0">-- Select Child --</option>
+                                    {children.map(child =>
+                                        <option key={child.id} value={child.id} {...child.id === gift.id ? 'selected' : ''}>{child.firstName + " " + child.lastName}</option>
+                                    )}
+                                </select>
+                                {errors.ChildId && errors.ChildId.map(errorChildId => <span key="{index]" className="text-danger">{errorChildId}</span>)}
                             </div>
-                            <div className="form-group row">
-                                <label className="control-label col-md-12" htmlFor="City">City</label>
-                                <div className="col-md-4">
-                                    <select className="form-control" data-val="true" name="ChildId" defaultValue={gift && gift.childId} required>
-                                        <option value="0">-- Select Child --</option>
-                                        {children.map(child =>
-                                            <option key={child.id} value={child.id} {...child.id === gift.id ? 'selected' : ''}>{child.firstName + " " + child.lastName}</option>                                     
-                                        )}
-                                    </select>
-                                    {errors.ChildId && errors.ChildId.map(errorChildId => <span key="{index]" className="text-danger">{errorChildId}</span>)}
-                                </div>
-                            </div >  
+                        </div >
+                    </div>
+                    <br />
+                    <div className="row">
+                        <div className="col-md-12 text-center">
+                            <div className="btn-group" role="group">
+                                <button type="submit" className="btn btn-success float-start btn-gap text-center">Save</button>
+                                <Link className="btn btn-danger text-center" to="/children">Back</Link>
+                            </div>
                         </div>
-                        <br />
-                        <div className="btn-group center-form" role="group">
-                            <button type="submit" className="btn btn-success float-start btn-gap text-center">Save</button>
-                            <Link className="btn btn-danger text-center" to="/children">Back</Link>
-                        </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </>
         );
 

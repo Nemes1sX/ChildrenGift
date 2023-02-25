@@ -32,7 +32,7 @@ class AddEditChild extends Component {
             'Accept': 'application/json, text/plain',
             'Content-Type': 'application/json;charset=UTF-8'
         };
-        if (this.state.child.id) { 
+        if (this.state.child.id) {
             let child = this.state.child;
             this.updateChild(data, child.id, headersJson);
         } else {
@@ -64,29 +64,29 @@ class AddEditChild extends Component {
         axios.post('api/children/post', data, {
             headers: headers
         }).then(response => response.data)
-                .then(() => {
-                    this.props.router.navigate("/children");                    
-                })
-            .catch((error) => {
-                this.setState({ errors: error.response.data.errors });
-                });
-     }
-    
-    updateChild(data, childId, headers) {
-        axios.put('api/children/update?id=' + childId, data, {
-                headers: headers,
-            }).then(response => response.data)
             .then(() => {
                 this.props.router.navigate("/children");
-                })
-                .catch((error) => {
-                    this.setState({ errors: error.response.data.errors });
-                    let response = error.response
-                    if (response.status === 404) {
-                        this.props.router.navigate("/404");
-                    }
-                })
-        }
+            })
+            .catch((error) => {
+                this.setState({ errors: error.response.data.errors });
+            });
+    }
+
+    updateChild(data, childId, headers) {
+        axios.put('api/children/update?id=' + childId, data, {
+            headers: headers,
+        }).then(response => response.data)
+            .then(() => {
+                this.props.router.navigate("/children");
+            })
+            .catch((error) => {
+                this.setState({ errors: error.response.data.errors });
+                let response = error.response
+                if (response.status === 404) {
+                    this.props.router.navigate("/404");
+                }
+            })
+    }
 
 
     render() {
@@ -100,33 +100,35 @@ class AddEditChild extends Component {
         return (
             <>
                 <h1 className="text-center">{title}</h1>
-                <div className="center-form">
                 <form onSubmit={this.saveChild}>
-                        <div className="form-group row">
-                            {childId && <input type="hidden" name="childId" value={childId} />}
+                    <div className="form-group row">
+                        {childId && <input type="hidden" name="childId" value={childId} />}
                     </div>
-                    <div className="form-group row center-form">
-                        <label className="control-label col-md-12 center-form" htmlFor="FirstName">First Name</label>
-                        <div className="col-md-6">
-                                <input className="form-control" type="text" name="firstName" defaultValue={child ? child.firstName : ""} required />
-                                {errors.FirstName && errors.FirstName.map(errorFirstName => <span key="{index}" className="text-danger">{errorFirstName}</span>)}
+                    <div className="form-group row">
+                        <label className="form-label col-md-12" htmlFor="FirstName">First Name</label>
+                        <div className="col-md-10">
+                            <input className="form-control" type="text" name="firstName" defaultValue={child ? child.firstName : ""} required />
+                            {errors.FirstName && errors.FirstName.map(errorFirstName => <span key="{index}" className="text-danger">{errorFirstName}</span>)}
                         </div>
-                        <label className="control-label col-md-12 center-form" htmlFor="LastName">Last Name</label>
-                            <div className="col-md-6">
-                                <input className="form-control" type="text" name="lastName" defaultValue={child ? child.lastName : ""} required />
-                                {errors.LastName && errors.LastName.map(errorLastName  => <span key="{index}" className="text-danger">{errorLastName}</span>)}
+                        <label className="control-label col-md-12" htmlFor="LastName">Last Name</label>
+                        <div className="col-md-10">
+                            <input className="form-control" type="text" name="lastName" defaultValue={child ? child.lastName : ""} required />
+                            {errors.LastName && errors.LastName.map(errorLastName => <span key="{index}" className="text-danger">{errorLastName}</span>)}
                         </div>
                     </div>
                     <br />
-                        <div className="btn-group center-form" role="group">
-                        <button type="submit" className="btn btn-success btn-gap">Save</button>
-                        <Link className="btn btn-danger" to="/children">Back</Link>
+                    <div className="row">
+                        <div className="col-md-12 text-center">
+                            <div className="btn-group" role="group">
+                                <button type="submit" className="btn btn-success btn-gap">Save</button>
+                                <Link className="btn btn-danger" to="/children">Back</Link>
+                            </div>
+                        </div>
                     </div>
-                    </form>
-                </div>
+                </form>
             </>
-         ); 
-        
+        );
+
     }
 }
 
