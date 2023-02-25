@@ -9,7 +9,6 @@ class AddEditChild extends Component {
         super(props);
         this.state = {
             title: "Create child",
-            //childId: 0,
             child: {},
             errors: {}
         }
