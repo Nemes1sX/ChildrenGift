@@ -105,6 +105,7 @@ class AddEditGift extends Component {
             errors
         } = this.state
 
+
         return (
             <>
                 <h1 className="text-center">{title}</h1>
@@ -115,19 +116,19 @@ class AddEditGift extends Component {
                     <div className="form-group row">
                         <label className="form-label col-md-12" htmlFor="Name">Name</label>
                         <div className="col-md-10">
-                            <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ""} required />
-                            {errors.Name && errors.Name.map(errorName => <span key="{index}" className="text-danger">{errorName}</span>)}
+                            <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ''} required/>
+                            {errors.Name && errors.Name.map((errorName, index) => <span key="{index}" className="text-danger">{errorName}</span>)}
                         </div>
                         <div className="form-group row">
                             <label className="form-label col-md-12" htmlFor="City">City</label>
                             <div className="col-md-10">
-                                <select className="form-control" data-val="true" name="ChildId" defaultValue={gift && gift.childId} required>
+                                <select className="form-control" data-val="true" name="ChildId" value={gift.childId} required>
                                     <option value="0">-- Select Child --</option>
                                     {children.map(child =>
-                                        <option key={child.id} value={child.id} {...child.id === gift.id ? 'selected' : ''}>{child.firstName + " " + child.lastName}</option>
+                                        <option key={child.id} value={child.id}>{child.firstName + " " + child.lastName}</option>
                                     )}
                                 </select>
-                                {errors.ChildId && errors.ChildId.map(errorChildId => <span key="{index]" className="text-danger">{errorChildId}</span>)}
+                                {errors.ChildId && errors.ChildId.map((errorChildId, index) => <span key="{index}" className="text-danger">{errorChildId}</span>)}
                             </div>
                         </div >
                     </div>

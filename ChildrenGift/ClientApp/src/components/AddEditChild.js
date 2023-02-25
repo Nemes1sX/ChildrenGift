@@ -108,12 +108,12 @@ class AddEditChild extends Component {
                         <label className="form-label col-md-12" htmlFor="FirstName">First Name</label>
                         <div className="col-md-10">
                             <input className="form-control" type="text" name="firstName" defaultValue={child ? child.firstName : ""} required />
-                            {errors.FirstName && errors.FirstName.map(errorFirstName => <span key="{index}" className="text-danger">{errorFirstName}</span>)}
+                            {errors.FirstName && errors.FirstName.map((errorFirstName, index) => <span key="{index}" className="text-danger">{errorFirstName}</span>)}
                         </div>
                         <label className="control-label col-md-12" htmlFor="LastName">Last Name</label>
                         <div className="col-md-10">
                             <input className="form-control" type="text" name="lastName" defaultValue={child ? child.lastName : ""} required />
-                            {errors.LastName && errors.LastName.map(errorLastName => <span key="{index}" className="text-danger">{errorLastName}</span>)}
+                            {errors.LastName && errors.LastName.map((errorLastName, index) => <span key="{index}" className="text-danger">{errorLastName}</span>)}
                         </div>
                     </div>
                     <br />

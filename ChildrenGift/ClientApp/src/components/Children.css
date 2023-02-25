@@ -1,9 +1,4 @@
-﻿.center-form {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.scrollable-table {
+﻿.scrollable-table {
     overflow: auto;
     height: 320px;
 }
