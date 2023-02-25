@@ -20,7 +20,7 @@ class AddEditChild extends Component {
         const params = new URLSearchParams(window.location.search);
         let childId = params.get('id');
         if (childId && childId > 0) {
-        this.getChild();
+            this.getChild();
         }
     }
 
@@ -47,9 +47,15 @@ class AddEditChild extends Component {
             return;
         } else {
             axios.get('api/children/read?id=' + childId)
-                .then(response => response.json())
+                .then(response => response.data)
                 .then(data => {
                     this.setState({ title: "Edit child", child: data });
+                })
+                .catch(error => {
+                    let response = error.response
+                    if (response.status === 404) {
+                        this.props.router.navigate("/404");
+                    }
                 });
         }
     }
@@ -71,7 +77,7 @@ class AddEditChild extends Component {
                 headers: headers,
             }).then(response => response.data)
             .then(() => {
-                this.props.router.navigate("children");
+                this.props.router.navigate("/children");
                 })
                 .catch((error) => {
                     this.setState({ errors: error.response.data.errors });
@@ -103,12 +109,12 @@ class AddEditChild extends Component {
                         <label className="control-label col-md-12 center-form" htmlFor="FirstName">First Name</label>
                         <div className="col-md-6">
                                 <input className="form-control" type="text" name="firstName" defaultValue={child ? child.firstName : ""} required />
-                                {errors.FirstName && errors.FirstName.map(errorFirstName => <span className="text-danger">{errorFirstName}</span>)}
+                                {errors.FirstName && errors.FirstName.map(errorFirstName => <span key="{index}" className="text-danger">{errorFirstName}</span>)}
                         </div>
                         <label className="control-label col-md-12 center-form" htmlFor="LastName">Last Name</label>
                             <div className="col-md-6">
                                 <input className="form-control" type="text" name="lastName" defaultValue={child ? child.lastName : ""} required />
-                                {errors.LastName && errors.LastName.map(errorLastName => <span className="text-danger">{errorLastName}</span>)}
+                                {errors.LastName && errors.LastName.map(errorLastName  => <span key="{index}" className="text-danger">{errorLastName}</span>)}
                         </div>
                     </div>
                     <br />

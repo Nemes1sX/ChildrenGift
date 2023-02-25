@@ -26,8 +26,8 @@ export class Children extends Component {
 
     getChildrenGifts(id) {
         this.setState({ gifts: [] })
-        fetch("api/gifts/childgift?childId=" + id)
-            .then(response => response.json())
+        axios.get("api/gifts/childgift?childId=" + id)
+            .then(response => response.data)
             .then(data => {
                 this.setState({ gifts: data })
             });
@@ -44,9 +44,9 @@ export class Children extends Component {
             return;
         }
         axios.delete("api/children/delete?id=" + id)
-            .then(response => response.json())
+            .then(response => response.data)
             .then(response => {
-                alert(response);
+                alert(response.message);
                 this.refreshFullList();
             })
             .catch(error => {
@@ -58,14 +58,15 @@ export class Children extends Component {
         if (!window.confirm("Do you want to delete gift with Id: " + id)) {
             return;
         }
-        axios.delete("api/gift/delete?id=" + id)
+        axios.delete("api/gifts/delete?id=" + id)
             .then(response => response.data)
             .then(response => {
-                alert(response);
+                alert(response.message);
                 this.refreshFullList();
             })
             .catch(error => {
                 alert(error);
+                this.props.router.navigate("/children");
             });
     }
 
@@ -104,7 +105,7 @@ export class Children extends Component {
                                                             pathname: 'edit',
                                                             search: 'id=' + child.id
                                                         }}>Edit</Link>
-                                                        <a className="btn btn-danger" onClick={(id) => this.deleteChild(child.id)}>Delete</a>
+                                                        <button type="button" className="btn btn-danger" onClick={(id) => this.deleteChild(child.id)}>Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -139,8 +140,8 @@ export class Children extends Component {
                                                         <Link className="btn btn-secondary btn-gap" to={{
                                                             pathname: '/gift/edit',
                                                             search:  'id=' + gift.id
-                                                        }}>Edit</Link>
-                                                        <a className="btn btn-danger btn-gap" onClick={() => this.deleteGift(gift.id)}>Delete</a>
+                                                    }}>Edit</Link>
+                                                    <button type="button" className="btn btn-danger btn-gap" onClick={() => this.deleteGift(gift.id)}>Delete</button>
                                                     </div>
                                                 </td>
                                             </tr>

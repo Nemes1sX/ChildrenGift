@@ -61,6 +61,8 @@ namespace ChildrenGift.Repositories
             gift.Name = giftFormRequest.Name;
             gift.ChildId= giftFormRequest.ChildId;
 
+            await _context.SaveChangesAsync();
+
             return _mapper.Map<GiftDto>(gift); 
         }
 

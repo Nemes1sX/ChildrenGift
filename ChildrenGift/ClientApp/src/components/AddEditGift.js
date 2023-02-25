@@ -117,7 +117,7 @@ class AddEditGift extends Component {
                             <label className="control-label col-md-12" htmlFor="Name">Name</label>
                             <div className="col-md-6">
                                 <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ""} required />
-                                {errors.Name && errors.Name.map( errorName => <span className="text-danger">{errorName}</span>)}
+                                {errors.Name && errors.Name.map(errorName => <span key="{index}" className="text-danger">{errorName}</span>)}
                             </div>
                             <div className="form-group row">
                                 <label className="control-label col-md-12" htmlFor="City">City</label>
@@ -128,7 +128,7 @@ class AddEditGift extends Component {
                                             <option key={child.id} value={child.id} {...child.id === gift.id ? 'selected' : ''}>{child.firstName + " " + child.lastName}</option>                                     
                                         )}
                                     </select>
-                                    {errors.ChildId && errors.ChildId.map(errorChildId => <span className="text-danger">{errorChildId}</span>)}
+                                    {errors.ChildId && errors.ChildId.map(errorChildId => <span key="{index]" className="text-danger">{errorChildId}</span>)}
                                 </div>
                             </div >  
                         </div>
