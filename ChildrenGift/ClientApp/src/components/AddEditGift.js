@@ -14,6 +14,7 @@ class AddEditGift extends Component {
         }
 
         this.saveGift = this.saveGift.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentDidMount() {
@@ -95,6 +96,15 @@ class AddEditGift extends Component {
             })
     }
 
+    handleChange(event) {
+        this.setState(prevState => ({
+            gift: {
+                ...prevState.gift,
+                childId: event.target.value
+            }
+        }))
+    }
+
 
     render() {
         const {
@@ -115,13 +125,13 @@ class AddEditGift extends Component {
                     <div className="form-group row">
                         <label className="form-label col-md-12" htmlFor="Name">Name</label>
                         <div className="col-md-10">
-                            <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ''} required/>
+                            <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ''} onChange={this.handleChange} required/>
                             {errors.Name && errors.Name.map((errorName, index) => <span key="{index}" className="text-danger">{errorName}</span>)}
                         </div>
                         <div className="form-group row">
-                            <label className="form-label col-md-12" htmlFor="City">City</label>
+                            <label className="form-label col-md-12" htmlFor="City">Child</label>
                             <div className="col-md-10">
-                                <select className="form-control" data-val="true" name="ChildId" value={gift.childId} required>
+                                <select className="form-control" data-val="true" name="ChildId" value={gift.childId} onChange={this.handleChange} required>
                                     <option value="0">-- Select Child --</option>
                                     {children.map(child =>
                                         <option key={child.id} value={child.id}>{child.firstName + " " + child.lastName}</option>
