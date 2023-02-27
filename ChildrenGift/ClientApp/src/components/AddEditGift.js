@@ -125,7 +125,7 @@ class AddEditGift extends Component {
                     <div className="form-group row">
                         <label className="form-label col-md-12" htmlFor="Name">Name</label>
                         <div className="col-md-10">
-                            <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ''} onChange={this.handleChange} required/>
+                            <input className="form-control" type="text" name="Name" defaultValue={gift ? gift.name : ''} required/>
                             {errors.Name && errors.Name.map((errorName, index) => <span key="{index}" className="text-danger">{errorName}</span>)}
                         </div>
                         <div className="form-group row">
